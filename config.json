@@ -1,0 +1,48 @@
+{
+  "name": "google-sheets",
+  "viewName": "Google Sheets",
+  "version": "1.0.0",
+  "type": "executer",
+  "execProgram": "node",
+  "main": "app.js",
+  "imgUrl": "logo.png",
+  "description": "Google Sheets Plugin for Kaholo",
+  "settings": [
+    {
+      "name": "credentials",
+      "viewName": "Service Account Credentials",
+      "type": "vault"
+    }
+  ],
+  "methods": [
+    {
+      "name": "startSpreadsheet",
+      "viewName": "Start a New Spreadsheet",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetTitle",
+          "viewName": "Spreadsheet Title",
+          "description": "Title of a new spreadsheet. Default is \"Untitled spreadsheet\".",
+          "type": "string",
+          "placeholder": "Untitled spreadsheet",
+          "default": "Untitled spreadsheet"
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Name",
+          "description": "The name of the sheet. Default is \"Sheet1\".",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "default": "Sheet1"
+        }
+      ]
+    }
+  ]
+}
