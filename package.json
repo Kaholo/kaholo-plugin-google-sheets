@@ -1,6 +1,5 @@
 {
   "name": "kaholo-plugin-template",
-  "version": "1.0.0",
   "description": "A template for Kaholo plugin development",
   "main": "app.js",
   "scripts": {
@@ -26,6 +25,7 @@
   },
   "dependencies": {
     "googleapis": "100.0.0",
+    "kaholo-plugin-library": "Kaholo/kaholo-plugin-library",
     "lodash": "^4.17.21"
   }
 }

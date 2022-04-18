@@ -5,9 +5,8 @@ const { GoogleApiClientNames } = require("./consts");
 function injectGoogleApiClients(callback, apiClientNames = ["sheets"]) {
   validateApiClientNames(apiClientNames);
   const scopes = determineAuthScopes(apiClientNames);
-  return async ({ params }, settings) => {
-    const credentials = JSON.parse(params.credentials || settings.credentials);
-    const authClient = await createGoogleServiceAccountAuthClient(credentials, scopes);
+  return async (params) => {
+    const authClient = await createGoogleServiceAccountAuthClient(params.credentials, scopes);
     const googleClients = createGoogleApiClients(apiClientNames, authClient);
     return callback(googleClients, _.omit(params, "credentials"));
   };

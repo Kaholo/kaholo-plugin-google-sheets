@@ -11,6 +11,7 @@
     {
       "name": "credentials",
       "viewName": "Service Account Credentials",
+      "parserType": "object",
       "type": "vault"
     }
   ],
@@ -24,6 +25,7 @@
           "viewName": "Service Account Credentials",
           "description": "JSON document containing service account credentials.",
           "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
           "type": "vault"
         },
         {

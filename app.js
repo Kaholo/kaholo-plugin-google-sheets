@@ -1,3 +1,4 @@
+const { bootstrap } = require("kaholo-plugin-library");
 const { injectGoogleApiClients } = require("./helpers");
 const { prepareStartSpreadsheetPayload } = require("./payload-functions");
 
@@ -8,6 +9,6 @@ async function startSpreadsheet({ sheets }, params) {
   return result;
 }
 
-module.exports = {
+module.exports = bootstrap({
   startSpreadsheet: injectGoogleApiClients(startSpreadsheet, ["sheets"]),
-};
+});
