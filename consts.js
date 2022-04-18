@@ -1,8 +1,8 @@
-const GoogleApiClientNames = {
+const GOOGLE_API_CLIENT_NAMES = {
   SHEETS: "sheets",
   DRIVE: "drive",
 };
 
 module.exports = {
-  GoogleApiClientNames,
+  GOOGLE_API_CLIENT_NAMES,
 };

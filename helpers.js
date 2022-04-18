@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 const _ = require("lodash");
-const { GoogleApiClientNames } = require("./consts");
+const { GOOGLE_API_CLIENT_NAMES } = require("./consts");
 
 function injectGoogleApiClients(callback, apiClientNames = ["sheets"]) {
   validateApiClientNames(apiClientNames);
@@ -14,8 +14,8 @@ function injectGoogleApiClients(callback, apiClientNames = ["sheets"]) {
 
 function determineAuthScopes(apiClientNames) {
   const apiClientsRequiredScopesMap = new Map([
-    [GoogleApiClientNames.SHEETS, ["https://www.googleapis.com/auth/spreadsheets"]],
-    [GoogleApiClientNames.DRIVE, ["https://www.googleapis.com/auth/drive"]],
+    [GOOGLE_API_CLIENT_NAMES.SHEETS, ["https://www.googleapis.com/auth/spreadsheets"]],
+    [GOOGLE_API_CLIENT_NAMES.DRIVE, ["https://www.googleapis.com/auth/drive"]],
   ]);
   return apiClientNames.map((apiClientName) => (
     apiClientsRequiredScopesMap.get(apiClientName)
@@ -38,7 +38,7 @@ function validateApiClientNames(apiClientNames) {
     throw new Error("apiClientNames parameter must be an array.");
   }
   const invalidApiClientNames = apiClientNames.filter((apiClientName) => (
-    !Object.values(GoogleApiClientNames).includes(apiClientName)
+    !Object.values(GOOGLE_API_CLIENT_NAMES).includes(apiClientName)
   ));
   if (invalidApiClientNames.length) {
     const invalidClientNamesString = invalidApiClientNames.map((apiClientName) => `"${apiClientName}"`).join(", ");
@@ -64,8 +64,8 @@ function createGoogleApiClient(apiClientName, auth) {
 
 function getGoogleApiClientConfig(clientName) {
   const apiClientConfigsMap = new Map([
-    [GoogleApiClientNames.SHEETS, { version: "v4" }],
-    [GoogleApiClientNames.DRIVE, { version: "v3" }],
+    [GOOGLE_API_CLIENT_NAMES.SHEETS, { version: "v4" }],
+    [GOOGLE_API_CLIENT_NAMES.DRIVE, { version: "v3" }],
   ]);
   return apiClientConfigsMap.get(clientName);
 }
