@@ -6,6 +6,7 @@ function injectGoogleApiClients(callback, apiClientNames = ["sheets"]) {
   validateApiClientNames(apiClientNames);
   const scopes = determineAuthScopes(apiClientNames);
   return async (params) => {
+    validateCredentials(params.credentials);
     const authClient = await createGoogleServiceAccountAuthClient(params.credentials, scopes);
     const googleClients = createGoogleApiClients(apiClientNames, authClient);
     return callback(googleClients, _.omit(params, "credentials"));
@@ -20,6 +21,18 @@ function determineAuthScopes(apiClientNames) {
   return apiClientNames.map((apiClientName) => (
     apiClientsRequiredScopesMap.get(apiClientName)
   )).flat();
+}
+
+function validateCredentials(credentialsObject) {
+  if (!credentialsObject) {
+    throw new Error("Google Service Account credentials are required. Please specify them in the action's parameters or plugin's settings.");
+  }
+  const requiredProperties = ["client_email", "private_key"];
+  requiredProperties.forEach((prop) => {
+    if (!Reflect.has(credentialsObject, prop)) {
+      throw new Error(`Missing property "${prop}" in the Google Service Account credentials object.`);
+    }
+  });
 }
 
 async function createGoogleServiceAccountAuthClient(credentials, scopes) {
