@@ -39,10 +39,92 @@
         {
           "name": "sheetTitle",
           "viewName": "Sheet Name",
+          "description": "The name of a new sheet. Default is \"Sheet1\".",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "default": "Sheet1"
+        }
+      ]
+    },
+    {
+      "name": "addSheet",
+      "viewName": "Add a New Sheet",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet, to add the sheet to.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Name",
           "description": "The name of the sheet. Default is \"Sheet1\".",
           "type": "string",
           "placeholder": "Sheet1",
           "default": "Sheet1"
+        }
+      ]
+    },
+    {
+      "name": "insertRow",
+      "viewName": "Insert Row",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Title",
+          "description": "Title of the target sheet.",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "required": true
+        },
+        {
+          "name": "row",
+          "viewName": "Row Number",
+          "description": "Number of the row to insert the data at.",
+          "type": "int",
+          "placeholder": 14
+        },
+        {
+          "name": "data",
+          "viewName": "Data",
+          "description": "Data to be inserted, each line represents one cell.",
+          "placeholder": "22.5\nA-301\n9.132%",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "overwrite",
+          "viewName": "Overwrite Existing Data",
+          "description": "Overwrite all data in the given row.",
+          "type": "boolean",
+          "default": false
         }
       ]
     }
