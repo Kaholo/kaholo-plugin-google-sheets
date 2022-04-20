@@ -2,6 +2,10 @@ const { google } = require("googleapis");
 const _ = require("lodash");
 const { GOOGLE_API_CLIENT_NAMES } = require("./consts");
 
+/**
+ * This function injects given Google API Clients with JWT Auth Client
+ * into the parameters of the passed function with created
+ */
 function injectGoogleApiClients(callback, apiClientNames) {
   validateApiClientNames(apiClientNames);
   const scopes = determineAuthScopes(apiClientNames);
@@ -13,6 +17,9 @@ function injectGoogleApiClients(callback, apiClientNames) {
   };
 }
 
+/**
+ * Each API Client requires different authorization scope
+ */
 function determineAuthScopes(apiClientNames) {
   const apiClientsRequiredScopesMap = new Map([
     [GOOGLE_API_CLIENT_NAMES.SHEETS, ["https://www.googleapis.com/auth/spreadsheets"]],
@@ -27,6 +34,7 @@ function validateCredentials(credentialsObject) {
   if (!credentialsObject) {
     throw new Error("Google Service Account credentials are required. Please specify them in the action's parameters or plugin's settings.");
   }
+  // These properties are required for JWT Auth Client
   const requiredProperties = ["client_email", "private_key"];
   requiredProperties.forEach((prop) => {
     if (!Reflect.has(credentialsObject, prop)) {

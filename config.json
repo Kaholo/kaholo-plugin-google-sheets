@@ -109,7 +109,8 @@
           "viewName": "Row Number",
           "description": "Number of the row to insert the data at.",
           "type": "int",
-          "placeholder": 14
+          "placeholder": 14,
+          "default": 1
         },
         {
           "name": "data",
@@ -123,8 +124,83 @@
           "name": "overwrite",
           "viewName": "Overwrite Existing Data",
           "description": "Overwrite all data in the given row.",
-          "type": "boolean",
-          "default": false
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "modifyAccessRights",
+      "viewName": "Modify Access Rights",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sharing",
+          "viewName": "Sharing",
+          "description": "Sharing setting for the spreadsheet.",
+          "type": "options",
+          "default": "restricted",
+          "options": [
+            {
+              "id": "unrestricted",
+              "name": "Unrestricted"
+            },
+            {
+              "id": "restricted",
+              "name": "Restricted"
+            }
+          ]
+        },
+        {
+          "name": "viewers",
+          "viewName": "Viewers",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "commenters",
+          "viewName": "Commenters",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "editors",
+          "viewName": "Editors",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "notifyMessage",
+          "viewName": "Notify Message",
+          "description": "Notification message to send to the granted email addresses.",
+          "placeholder": "You have access now to this spreadsheet: https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe.",
+          "type": "text"
+        },
+        {
+          "name": "overwrite",
+          "viewName": "Overwrite Existing Access Rights",
+          "description": "Overwrite all existing access rights on the spreadsheet.",
+          "type": "boolean"
         }
       ]
     }
