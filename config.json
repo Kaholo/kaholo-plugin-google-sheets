@@ -113,26 +113,20 @@
           "required": true
         },
         {
-          "name": "row",
-          "viewName": "Row Number",
-          "description": "Number of the row to insert the data at.",
-          "type": "int",
-          "placeholder": 14,
-          "default": 1
-        },
-        {
           "name": "data",
           "viewName": "Data",
           "description": "Data to be inserted, each line represents one cell.",
           "placeholder": "22.5\nA-301\n9.132%",
+          "required": true,
           "type": "text",
           "parserType": "array"
         },
         {
-          "name": "overwrite",
-          "viewName": "Overwrite Existing Data",
-          "description": "Overwrite all data in the given row.",
-          "type": "boolean"
+          "name": "row",
+          "viewName": "Row Number",
+          "description": "Number of the row to insert the data at.",
+          "type": "int",
+          "placeholder": 14
         }
       ]
     },

@@ -13,7 +13,7 @@ async function startSpreadsheet({ sheets, drive }, params) {
     const permissionPayloads = prepareModifyAccessRightsPayloads({
       spreadsheetUrl: result.spreadsheetUrl,
       sharing: "restricted",
-      writers: params.authorizedUsers,
+      editors: params.authorizedUsers,
     });
     const requests = permissionPayloads.map(
       (permissionPayload) => drive.permissions.create(permissionPayload),
@@ -39,7 +39,7 @@ async function addSheet({ sheets }, params) {
 async function insertRow({ sheets }, params) {
   let result;
   const payload = prepareInsertRowPayload(params);
-  if (params.overwrite) {
+  if (params.row) {
     result = await sheets.spreadsheets.values.update(payload);
   } else {
     result = await sheets.spreadsheets.values.append(payload);

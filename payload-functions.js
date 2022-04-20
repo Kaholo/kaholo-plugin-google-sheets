@@ -33,8 +33,8 @@ function prepareAddSheetPayload(params) {
 }
 
 function prepareInsertRowPayload(params) {
-  const range = `${params.sheetTitle}!A${params.row}`;
-  const values = [(params.data || []).map((cell) => cell.trim())];
+  const range = `${params.sheetTitle}!A${params.row || 1}`;
+  const values = params.data ? params.data.map((cell) => cell.trim()) : [];
   return {
     spreadsheetId: extractSpreadsheetIdFromUrl(params.spreadsheetUrl),
     range,
