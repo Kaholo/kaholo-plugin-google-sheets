@@ -26,6 +26,6 @@
   "dependencies": {
     "googleapis": "100.0.0",
     "kaholo-plugin-library": "Kaholo/kaholo-plugin-library",
-    "lodash": "^4.17.21"
+    "lodash": "4.17.21"
   }
 }
