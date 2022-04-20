@@ -1,5 +1,5 @@
 function extractSpreadsheetIdFromUrl(url) {
-  const match = url.match(/docs\.google\.com\/spreadsheets\/d\/(.+)\/edit/);
+  const match = url.match(/\/d\/(.*?)(\/|$)/);
   if (!match || !match[1]) {
     throw new Error(`Spreadsheet URL "${url}" is invalid, unable to extract the spreadsheet ID.`);
   }

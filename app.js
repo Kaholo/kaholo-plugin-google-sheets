@@ -6,8 +6,25 @@ const {
   prepareInsertRowPayload, prepareModifyAccessRightsPayloads,
 } = require("./payload-functions");
 
-async function startSpreadsheet({ sheets }, params) {
-  const { data: result } = await sheets.spreadsheets.create(prepareStartSpreadsheetPayload(params));
+async function startSpreadsheet({ sheets, drive }, params) {
+  const payload = prepareStartSpreadsheetPayload(params);
+  const { data: result } = await sheets.spreadsheets.create(payload);
+  if (params.authorizedUsers) {
+    const permissionPayloads = prepareModifyAccessRightsPayloads({
+      spreadsheetUrl: result.spreadsheetUrl,
+      sharing: "restricted",
+      writers: params.authorizedUsers,
+    });
+    const requests = permissionPayloads.map(
+      (permissionPayload) => drive.permissions.create(permissionPayload),
+    );
+    await Promise.all(requests);
+    const prependMessageWith = params.authorizedUsers.length > 1 ? `Users ${params.authorizedUsers.join(", ")} were` : `User ${params.authorizedUsers[0]} was`;
+    // TODO: Change console.error to console.info
+    // when it is fixed for console.info to print
+    // messages in the Activity Log
+    console.error(`${prependMessageWith} granted writer permissions to the spreadsheet ${result.spreadsheetId}`);
+  }
   return result;
 }
 

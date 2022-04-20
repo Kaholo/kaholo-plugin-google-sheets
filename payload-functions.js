@@ -65,13 +65,13 @@ function prepareModifyAccessRightsPayloads(params) {
   };
   const commonOptions = {
     ...emailOptions,
-    fields: "id",
+    fields: "*",
     fileId,
   };
   const viewers = params.viewers ? params.viewers.map((viewerMail) => ({
     ...commonOptions,
     requestBody: {
-      role: "viewer",
+      role: "reader",
       type: "user",
       emailAddress: viewerMail,
     },
@@ -84,15 +84,15 @@ function prepareModifyAccessRightsPayloads(params) {
       emailAddress: commenterMail,
     },
   })) : [];
-  const writers = params.writers ? params.writers.map((writerMail) => ({
+  const editors = params.editors ? params.editors.map((editorMail) => ({
     ...commonOptions,
     requestBody: {
       role: "writer",
       type: "user",
-      emailAddress: writerMail,
+      emailAddress: editorMail,
     },
   })) : [];
-  return [...viewers, ...commenters, ...writers];
+  return [...viewers, ...commenters, ...editors];
 }
 
 module.exports = {

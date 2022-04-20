@@ -43,6 +43,14 @@
           "type": "string",
           "placeholder": "Sheet1",
           "default": "Sheet1"
+        },
+        {
+          "name": "authorizedUsers",
+          "viewName": "Authorized Users",
+          "description": "Grant writer permissions to the list of passed email addresses on the created spreadsheet.",
+          "placeholder": "admin@gmail.com\nadmin2@gmail.com",
+          "type": "text",
+          "parserType": "array"
         }
       ]
     },
