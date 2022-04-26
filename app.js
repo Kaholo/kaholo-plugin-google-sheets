@@ -1,6 +1,7 @@
 const { bootstrap } = require("kaholo-plugin-library");
 const { GOOGLE_API_CLIENT_NAMES } = require("./consts");
 const { injectGoogleApiClients } = require("./google-service");
+const { fetchAllPermissions, extractSpreadsheetIdFromUrl } = require("./helpers");
 const {
   prepareStartSpreadsheetPayload,
   prepareAddSheetPayload,
@@ -25,6 +26,7 @@ async function startSpreadsheet({ sheets, drive }, params) {
     // TODO: Change console.error to console.info
     // when it is fixed for console.info to print
     // messages in the Activity Log
+    // Jira ticket: https://kaholo.atlassian.net/browse/KAH-3636
     console.error(`${prependMessageWith} granted writer permissions to the spreadsheet ${result.spreadsheetId}`);
   }
   return result;
@@ -50,9 +52,15 @@ async function insertRow({ sheets }, params) {
 }
 
 async function modifyAccessRights({ drive }, params) {
-  // TODO: Implement overwrite feature
   if (params.overwrite) {
-    throw new Error("Overwrite feature is not yet implemented. If Viewers, Commenters, or Editors are specified, they will be added. If empty, no change is made.");
+    const fileId = extractSpreadsheetIdFromUrl(params.spreadsheetUrl);
+    const existingPermissions = await fetchAllPermissions(drive, fileId);
+    const filteredPermissions = existingPermissions.filter(({ role }) => role !== "owner");
+    const deleteRequests = filteredPermissions.map(({ id }) => drive.permissions.delete({
+      fileId,
+      permissionId: id,
+    }));
+    await Promise.all(deleteRequests);
   }
   const payload = prepareModifyAccessRightsPayloads(params);
   const results = await Promise.all(payload.map(

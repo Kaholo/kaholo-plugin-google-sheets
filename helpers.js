@@ -6,6 +6,20 @@ function extractSpreadsheetIdFromUrl(url) {
   return match[1];
 }
 
+async function fetchAllPermissions(drive, fileId, pageToken) {
+  const payload = { fileId };
+  if (pageToken) {
+    payload.pageToken = pageToken;
+  }
+  const { data: { nextPageToken, permissions } } = drive.permissions.list(payload);
+  if (nextPageToken) {
+    const recursivePermissions = await fetchAllPermissions(drive, fileId, nextPageToken);
+    return permissions.concat(recursivePermissions);
+  }
+  return permissions;
+}
+
 module.exports = {
   extractSpreadsheetIdFromUrl,
+  fetchAllPermissions,
 };
