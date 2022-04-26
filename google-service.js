@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 const _ = require("lodash");
-const { GOOGLE_API_CLIENT_NAMES, API_CLIENT_SCOPES } = require("./consts");
+const { GOOGLE_API_CLIENT_NAMES, API_CLIENT_SCOPES, API_CLIENT_CONFIGS } = require("./consts");
 
 /**
  * This function injects given Google API Clients with JWT Auth Client
@@ -80,11 +80,7 @@ function createGoogleApiClient(apiClientName, auth) {
 }
 
 function getGoogleApiClientConfig(clientName) {
-  const apiClientConfigsMap = new Map([
-    [GOOGLE_API_CLIENT_NAMES.SHEETS, { version: "v4" }],
-    [GOOGLE_API_CLIENT_NAMES.DRIVE, { version: "v3" }],
-  ]);
-  return apiClientConfigsMap.get(clientName);
+  return API_CLIENT_CONFIGS.get(clientName);
 }
 
 module.exports = {
