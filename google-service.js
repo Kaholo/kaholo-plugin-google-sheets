@@ -1,6 +1,6 @@
 const { google } = require("googleapis");
 const _ = require("lodash");
-const { GOOGLE_API_CLIENT_NAMES } = require("./consts");
+const { GOOGLE_API_CLIENT_NAMES, API_CLIENT_SCOPES } = require("./consts");
 
 /**
  * This function injects given Google API Clients with JWT Auth Client
@@ -17,16 +17,26 @@ function injectGoogleApiClients(callback, apiClientNames) {
   };
 }
 
+function validateApiClientNames(apiClientNames) {
+  if (!Array.isArray(apiClientNames)) {
+    throw new Error("apiClientNames parameter must be an array.");
+  }
+  const invalidApiClientNames = apiClientNames.filter((apiClientName) => (
+    !Object.values(GOOGLE_API_CLIENT_NAMES).includes(apiClientName)
+  ));
+  if (invalidApiClientNames.length) {
+    const invalidClientNamesString = invalidApiClientNames.map((apiClientName) => `"${apiClientName}"`).join(", ");
+    const errorMessage = `Invalid Google API client name(s) were provided. Cannot inject ${invalidClientNamesString} Google API client(s).`;
+    throw new Error(errorMessage);
+  }
+}
+
 /**
  * Each API Client requires different authorization scope
  */
 function determineAuthScopes(apiClientNames) {
-  const apiClientsRequiredScopesMap = new Map([
-    [GOOGLE_API_CLIENT_NAMES.SHEETS, ["https://www.googleapis.com/auth/spreadsheets"]],
-    [GOOGLE_API_CLIENT_NAMES.DRIVE, ["https://www.googleapis.com/auth/drive"]],
-  ]);
   return apiClientNames.map((apiClientName) => (
-    apiClientsRequiredScopesMap.get(apiClientName)
+    API_CLIENT_SCOPES.get(apiClientName)
   )).flat();
 }
 
@@ -52,20 +62,6 @@ async function createGoogleServiceAccountAuthClient(credentials, scopes) {
   );
   await jwtAuthClient.authorize();
   return jwtAuthClient;
-}
-
-function validateApiClientNames(apiClientNames) {
-  if (!Array.isArray(apiClientNames)) {
-    throw new Error("apiClientNames parameter must be an array.");
-  }
-  const invalidApiClientNames = apiClientNames.filter((apiClientName) => (
-    !Object.values(GOOGLE_API_CLIENT_NAMES).includes(apiClientName)
-  ));
-  if (invalidApiClientNames.length) {
-    const invalidClientNamesString = invalidApiClientNames.map((apiClientName) => `"${apiClientName}"`).join(", ");
-    const errorMessage = `Invalid Google API client name(s) were provided. Cannot inject ${invalidClientNamesString} Google API client(s).`;
-    throw new Error(errorMessage);
-  }
 }
 
 function createGoogleApiClients(apiClientNames, authClient) {

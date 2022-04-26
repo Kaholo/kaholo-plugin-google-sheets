@@ -2,8 +2,10 @@ const { bootstrap } = require("kaholo-plugin-library");
 const { GOOGLE_API_CLIENT_NAMES } = require("./consts");
 const { injectGoogleApiClients } = require("./google-service");
 const {
-  prepareStartSpreadsheetPayload, prepareAddSheetPayload,
-  prepareInsertRowPayload, prepareModifyAccessRightsPayloads,
+  prepareStartSpreadsheetPayload,
+  prepareAddSheetPayload,
+  prepareInsertRowPayload,
+  prepareModifyAccessRightsPayloads,
 } = require("./payload-functions");
 
 async function startSpreadsheet({ sheets, drive }, params) {
