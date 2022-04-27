@@ -11,7 +11,7 @@ async function fetchAllPermissions(drive, fileId, pageToken) {
   if (pageToken) {
     payload.pageToken = pageToken;
   }
-  const { data: { nextPageToken, permissions } } = drive.permissions.list(payload);
+  const { data: { nextPageToken, permissions } } = await drive.permissions.list(payload);
   if (nextPageToken) {
     const recursivePermissions = await fetchAllPermissions(drive, fileId, nextPageToken);
     return permissions.concat(recursivePermissions);

@@ -43,7 +43,7 @@ async function addSheet({ sheets }, params) {
 async function insertRow({ sheets }, params) {
   let result;
   const payload = prepareInsertRowPayload(params);
-  if (params.row) {
+  if (params.row !== undefined) {
     result = await sheets.spreadsheets.values.update(payload);
   } else {
     result = await sheets.spreadsheets.values.append(payload);
