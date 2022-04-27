@@ -34,7 +34,7 @@ function prepareAddSheetPayload(params) {
 
 function prepareInsertRowPayload(params) {
   const range = `${params.sheetTitle}!A${params.row || 1}`;
-  const values = [(params.data || []).split("\n")];
+  const values = [(params.data || "").split("\n")];
   return {
     spreadsheetId: extractSpreadsheetIdFromUrl(params.spreadsheetUrl),
     range,
