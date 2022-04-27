@@ -1,0 +1,209 @@
+{
+  "name": "google-sheets",
+  "viewName": "Google Sheets",
+  "version": "1.0.0",
+  "type": "executer",
+  "execProgram": "node",
+  "main": "app.js",
+  "imgUrl": "logo.png",
+  "description": "Google Sheets Plugin for Kaholo",
+  "settings": [
+    {
+      "name": "credentials",
+      "viewName": "Service Account Credentials",
+      "parserType": "object",
+      "type": "vault"
+    }
+  ],
+  "methods": [
+    {
+      "name": "startSpreadsheet",
+      "viewName": "Start a New Spreadsheet",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetTitle",
+          "viewName": "Spreadsheet Title",
+          "description": "Title of a new spreadsheet. Default is \"Untitled spreadsheet\".",
+          "type": "string",
+          "placeholder": "Untitled spreadsheet",
+          "default": "Untitled spreadsheet"
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Name",
+          "description": "The name of a new sheet. Default is \"Sheet1\".",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "default": "Sheet1"
+        },
+        {
+          "name": "authorizedUsers",
+          "viewName": "Authorized Users",
+          "description": "Grant writer permissions to the list of passed email addresses on the created spreadsheet.",
+          "placeholder": "admin@gmail.com\nadmin2@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        }
+      ]
+    },
+    {
+      "name": "addSheet",
+      "viewName": "Add a New Sheet",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet, to add the sheet to.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Name",
+          "description": "The name of the sheet. Default is \"Sheet1\".",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "default": "Sheet1"
+        }
+      ]
+    },
+    {
+      "name": "insertRow",
+      "viewName": "Insert Row",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sheetTitle",
+          "viewName": "Sheet Title",
+          "description": "Title of the target sheet.",
+          "type": "string",
+          "placeholder": "Sheet1",
+          "required": true
+        },
+        {
+          "name": "data",
+          "viewName": "Data",
+          "description": "Data to be inserted, each line represents one cell.",
+          "placeholder": "22.5\nA-301\n9.132%",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "name": "row",
+          "viewName": "Row Number",
+          "description": "Number of the row to insert the data at.",
+          "type": "int",
+          "placeholder": 14
+        }
+      ]
+    },
+    {
+      "name": "modifyAccessRights",
+      "viewName": "Modify Access Rights",
+      "params": [
+        {
+          "name": "credentials",
+          "viewName": "Service Account Credentials",
+          "description": "JSON document containing service account credentials.",
+          "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
+          "parserType": "object",
+          "type": "vault"
+        },
+        {
+          "name": "spreadsheetUrl",
+          "viewName": "Spreadsheet URL",
+          "description": "URL of the spreadsheet.",
+          "type": "string",
+          "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
+          "required": true
+        },
+        {
+          "name": "sharing",
+          "viewName": "Sharing",
+          "description": "Sharing setting for the spreadsheet.",
+          "type": "options",
+          "default": "restricted",
+          "options": [
+            {
+              "id": "unrestricted",
+              "name": "Unrestricted"
+            },
+            {
+              "id": "restricted",
+              "name": "Restricted"
+            }
+          ]
+        },
+        {
+          "name": "viewers",
+          "viewName": "Viewers",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "commenters",
+          "viewName": "Commenters",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "editors",
+          "viewName": "Editors",
+          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
+          "type": "text",
+          "parserType": "array"
+        },
+        {
+          "name": "notifyMessage",
+          "viewName": "Notify Message",
+          "description": "Notification message to send to the granted email addresses.",
+          "placeholder": "You have access now to this spreadsheet: https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe.",
+          "type": "text"
+        },
+        {
+          "name": "overwrite",
+          "viewName": "Overwrite Existing Access Rights",
+          "description": "Overwrite all existing access rights on the spreadsheet.",
+          "type": "boolean"
+        }
+      ]
+    }
+  ]
+}

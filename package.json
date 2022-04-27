@@ -1,6 +1,5 @@
 {
   "name": "kaholo-plugin-template",
-  "version": "1.0.0",
   "description": "A template for Kaholo plugin development",
   "main": "app.js",
   "scripts": {
@@ -19,9 +18,16 @@
   },
   "homepage": "https://github.com/Kaholo/kaholo-plugin-template#readme",
   "devDependencies": {
-    "eslint": "^8.8.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4",
-    "jest": "^27.5.0"
+    "eslint": "8.8.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.25.4",
+    "jest": "27.5.0"
+  },
+  "dependencies": {
+    "@googleapis/drive": "2.3.0",
+    "@googleapis/sheets": "2.0.1",
+    "google-auth-library": "8.0.1",
+    "kaholo-plugin-library": "Kaholo/kaholo-plugin-library",
+    "lodash": "4.17.21"
   }
 }
