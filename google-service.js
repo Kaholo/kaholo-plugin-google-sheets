@@ -1,6 +1,11 @@
-const { google } = require("googleapis");
 const _ = require("lodash");
-const { GOOGLE_API_CLIENT_NAMES, API_CLIENT_SCOPES, API_CLIENT_CONFIGS } = require("./consts");
+const googleAuth = require("google-auth-library");
+const {
+  GOOGLE_API_CLIENT_NAMES,
+  API_CLIENT_SCOPES,
+  API_CLIENT_CONFIGS,
+  GOOGLE_API_CLIENTS,
+} = require("./consts");
 
 /**
  * This function injects given Google API Clients with JWT Auth Client
@@ -54,7 +59,7 @@ function validateCredentials(credentialsObject) {
 }
 
 async function createGoogleServiceAccountAuthClient(credentials, scopes) {
-  const jwtAuthClient = new google.auth.JWT(
+  const jwtAuthClient = new googleAuth.JWT(
     credentials.client_email,
     null,
     credentials.private_key,
@@ -73,7 +78,7 @@ function createGoogleApiClients(apiClientNames, authClient) {
 
 function createGoogleApiClient(apiClientName, auth) {
   const apiClientConfig = getGoogleApiClientConfig(apiClientName);
-  return google[apiClientName]({
+  return GOOGLE_API_CLIENTS.get(apiClientName)({
     ...apiClientConfig,
     auth,
   });
