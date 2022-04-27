@@ -118,8 +118,7 @@
           "description": "Data to be inserted, each line represents one cell.",
           "placeholder": "22.5\nA-301\n9.132%",
           "required": true,
-          "type": "text",
-          "parserType": "array"
+          "type": "text"
         },
         {
           "name": "row",
