@@ -1,7 +1,7 @@
 {
   "name": "google-sheets",
   "viewName": "Google Sheets",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "executer",
   "execProgram": "node",
   "main": "app.js",
@@ -31,7 +31,7 @@
         {
           "name": "spreadsheetTitle",
           "viewName": "Spreadsheet Title",
-          "description": "Title of a new spreadsheet. Default is \"Untitled spreadsheet\".",
+          "description": "Title of the new spreadsheet. Default is \"Untitled spreadsheet\".",
           "type": "string",
           "placeholder": "Untitled spreadsheet",
           "default": "Untitled spreadsheet"
@@ -47,7 +47,7 @@
         {
           "name": "authorizedUsers",
           "viewName": "Authorized Users",
-          "description": "Grant writer permissions to the list of passed email addresses on the created spreadsheet.",
+          "description": "A list of one-per-line email addresses of users who will be granded editor access on the new spreadsheet.",
           "placeholder": "admin@gmail.com\nadmin2@gmail.com",
           "type": "text",
           "parserType": "array"
@@ -69,7 +69,7 @@
         {
           "name": "spreadsheetUrl",
           "viewName": "Spreadsheet URL",
-          "description": "URL of the spreadsheet, to add the sheet to.",
+          "description": "URL of the spreadsheet to add a sheet to.",
           "type": "string",
           "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
           "required": true
@@ -77,10 +77,10 @@
         {
           "name": "sheetTitle",
           "viewName": "Sheet Name",
-          "description": "The name of the sheet. Default is \"Sheet1\".",
+          "description": "A unique name for the new sheet. Default is \"Sheet2\".",
           "type": "string",
-          "placeholder": "Sheet1",
-          "default": "Sheet1"
+          "placeholder": "Sheet2",
+          "default": "Sheet2"
         }
       ]
     },
@@ -106,8 +106,8 @@
         },
         {
           "name": "sheetTitle",
-          "viewName": "Sheet Title",
-          "description": "Title of the target sheet.",
+          "viewName": "Sheet Name",
+          "description": "Name of the target sheet.",
           "type": "string",
           "placeholder": "Sheet1",
           "required": true
@@ -123,9 +123,9 @@
         {
           "name": "row",
           "viewName": "Row Number",
-          "description": "Number of the row to insert the data at.",
+          "description": "(Optional) The row number where to insert the data or overwrite existing data.",
           "type": "int",
-          "placeholder": 14
+          "placeholder": 10
         }
       ]
     },
@@ -169,7 +169,7 @@
         {
           "name": "viewers",
           "viewName": "Viewers",
-          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "description": "(For Restricted sharing only) A list of email addresses, one email address per line, for view-only access.",
           "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
           "type": "text",
           "parserType": "array"
@@ -177,7 +177,7 @@
         {
           "name": "commenters",
           "viewName": "Commenters",
-          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "description": "(For Restricted sharing only) A list of email addresses, one email address per line, for view and comment access.",
           "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
           "type": "text",
           "parserType": "array"
@@ -185,7 +185,7 @@
         {
           "name": "editors",
           "viewName": "Editors",
-          "description": "List of email addresses, one email address per line. This option will only be valid if chosen Sharing is Restricted.",
+          "description": "(For Restricted sharing only) A list of email addresses, one email address per line, for full edit access.",
           "placeholder": "john.kowalsky@gmail.com\nadmin@gmail.com",
           "type": "text",
           "parserType": "array"
@@ -193,14 +193,14 @@
         {
           "name": "notifyMessage",
           "viewName": "Notify Message",
-          "description": "Notification message to send to the granted email addresses.",
-          "placeholder": "You have access now to this spreadsheet: https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe.",
+          "description": "Notification message to send to users granted access.",
+          "placeholder": "This is the laboratory results spreadsheet we discussed.",
           "type": "text"
         },
         {
           "name": "overwrite",
           "viewName": "Overwrite Existing Access Rights",
-          "description": "Overwrite all existing access rights on the spreadsheet.",
+          "description": "Overwrite all existing access rights on the spreadsheet, as opposed to just assinging additional rights.",
           "type": "boolean"
         }
       ]
