@@ -1,85 +1,97 @@
-# Kaholo SystemXYZ Plugin
-This plugin integrates ACME, inc. SystemXYZ with Kaholo, providing access to SystemXYZ's alerting functionality, for example sending a Ex message or setting an Zed alarm to notify someone of the results of a Kaholo Pipeline Action. For triggering Kaholo Pipelines from SystemXYZ, please see the Kaholo [SystemXYZ trigger](https://github.com/Kaholo/kaholo-trigger-systemxyz) instead.
+# Kaholo Google Sheets Plugin
+This plugin integrates Kaholo with [Google Sheets](https://www.google.com/sheets/about/). Google Sheets allows you to create and collaborate on online spreadsheets in real-time and from any device.
+
+The main purpose of this first version of the plugin is to automate data entry. To that end, it is able to create a new spreadsheet, add sheets, and write data to specific rows or just append new rows. It is also able to grant access to individuals based on their email addresses.
+
+This plugin may be expanded with additional functionality if driven by [user request](https://kaholo.io/contact/). Please do let us know which features you'd like to see next.
 
 ## Prerequisites
-This plugin works with SystemXYZ version 4.0 and later, both SaaS platform and locally hosted versions.
+This plugin requires a few things be configured in the Google Cloud Platform prior to using the plugin. First you need a service account and JSON format credentials for that account. This is no different from the other Google plugins - for example Google Cloud Compute, Google Kubernetes Engine, or Google Cloud CLI (gcloud) plugins - and the same service account may be used for all.
 
-The following SystemXYZ APIs must be enabled for 3rd party access in the SystemXYZ Platform. The Kaholo plugin's service ID string is "kaholo-plugin-da2de162". SystemXYZ does not support 3rd party access to the Wy API so there are no Wy controller methods in the plugin.
+The following Google APIs must be enabled. This is done in the Google Cloud Platform [API Library](https://console.cloud.google.com/apis/library).
 
->**SystemXYZ Ex API**
+>**Google Sheets API**
 >
->**SystemXYZ Zed API**
-
-The SystemXYZ connectivity package must be installed on Kaholo agents. A `Test API` method is provided in the plugin. Check Parameter "Install API" in order to automatically install the SystemXYZ connectivity package. Alternatively, ask your Kaholo administrator to follow the [installation instructions](https://www.systemxyz.com.nz/install_connectivity_package/v4) on the SystemXYZ webite.
+>**Google Drive API**
 
 ## Access and Authentication
-The plugin accesses SystemXYZ using the same URL as the web console, e.g. https://your-account.systemxyz.com.nz/. However, authentication with user/password is not permitted for automated processes.
+The Google Sheets plugin uses a set of service account keys (Credentials) for access and authentication.
 
-Instead the plugin uses SystemXYZ service tokens to authenticate. A SystemXYZ service token is a string that begins `XYZ-`, for example `XYZ-9ef6df656f9db28d4feaac0c0c6855bc`.  To get an appropriate service token, ask your SystemXYZ administrator for one that has permissions for the following actions:
-* ex-send
-* ex-send-email (only if email feature is used)
-* zed-readgroups
-* zed-triggergroups
-* xyz-vieworg
-* xyz-viewalarms
+* Credentials - JSON format service account keys as downloaded from GCP, stored in Kaholo Vault.
 
-You will also what to specify which Zed groups you will access, or alternately if the service token is granted `zed-any`, the plugin will be able to read and trigger all SystemXYZ groups.
+Credentials is a required parameter for all methods in this plugin.
 
-You may have more than one service token, these are vaulted in the Kaholo Vault. The service token is needed for Parameter "XYZ Service Token" as described below.
+When creating keys for a GCP service account, they can be downloaded in either JSON or P12 format. The JSON format is required for Kaholo plugins. Store the entire JSON document in a Kaholo Vault item. The Kaholo Vault allows them to be safely used without exposing the keys in log files, error messages, execution results, or any other output.
 
 ## Plugin Installation
 For download, installation, upgrade, downgrade and troubleshooting of plugins in general, see [INSTALL.md](./INSTALL.md).
 
 ## Plugin Settings
-Plugin settings act as default parameter values. If configured in plugin settings, the action parameters may be left unconfigured. Action parameters configured anyway over-ride the plugin-level settings for that Action.
-* Default XYZ Endpoint - The URL of your SystemXYZ installation, e.g. `https://your-account.systemxyz.com.nz/`
-* Default Zed Alarm Group - The Zed Alarm Group to use with Zed alarm methods, e.g. `zed-group-one`. Not used for Ex message-related methods.
-* Default Service Token (Vault) - The service token, stored in the Kaholo vault for authentication and access. e.g. `XYZ-9ef6df656f9db28d4feaac0c0c6855bc`
+Plugin settings act as default parameter values. If configured in plugin settings, the action parameters may be left unconfigured. Action parameters configured anyway over-ride the plugin-level settings for that Action. There is only one setting for this plugin:
 
-## Pipelining Alarm Messaging
-A common use case for this plugin is to prototype Wy controller notifications by catching Zed Hooks, applying logic, and sending Ex messages as appropriate. To do this the following steps are needed:
-1. Install and configure the Kaholo [SystemXYZ trigger](https://github.com/Kaholo/kaholo-trigger-systemxyz) to be activated by a [SystemXYZ Zed Hook](https://www.systemxyz.com.nz/zed_hooks/v4).
-1. Use the trigger to start your prototype Kaholo pipeline.
-1. Use method Read Zed Alarms to collect the active alarm list and details.
-1. Apply your logic using the Kaholo Code page and/or Kaholo Conditional Code.
-1. Use method Send Ex Message if your logic determines it appropriate.
+* Default Credentials - JSON format service account keys as downloaded from GCP, stored in Kaholo Vault.
 
-## Method: Test API
-This method does a trivial test of the SystemXYZ connectivity package installed on the Kaholo agent, in order to validate that it is installed correctly and can network connect to the XYZ Endpoint. It returns only the version number of the SystemXYZ system and does not require a service token.
+## Method: Start a New Spreadsheet
+This method creates a new Google Sheets spreadsheet owned by the service account. To be able to access and use the sheet, at least one Authorized User must be specified. The URL of the new spreadsheet can be found in Final Results on the Kaholo Execution Results page.
 
 ### Parameters
-Required parameters have an asterisk (*) next to their names.
-* XYZ Endpoint * - as described above in [plugin settings](#plugin-settings)
-* Install API (checkbox) - if checked and the connectivity package is not found on the agent, the plugin will attempt to automatically install it.
+1. Spreadsheet Title - A name for the new spreadsheet
+1. Sheet Name - A name for the first (and only) sheet in the new Spreadsheet
+1. Authorized Users - One or more email addresses of users who will be editors of the spreadsheet (one per line)
 
-## Method: Send Ex Message
-This method composes an Ex Message to send to SystemXYZ users and/or groups. Message bodies may be in JSON, MD, HTML, or plain text format. Malformed JSON, MD, or HTML results in a plain text message. Combinations of users and groups are permitted. Users listed who are also group members or member in more than one group get the message only once.
-
-> NOTE: Parameters left unconfigured get "Kaholo" by default, including message body and title. If parameter `Email` is selected, parameter `From` must be a valid user name or it will be rejected by SystemXYZ with `HTTP 404 - Page not found`. This also requires the service token have the special permission `ex-send-email`, otherwise you get the same HTTP 404 error.
+## Method: Add a New Sheet
+This method adds a new sheet to an existing Google Sheets spreadsheet.
 
 ### Parameters
-Required parameters have an asterisk (*) next to their names.
-* XYZ Endpoint * - as described above in [plugin settings](#plugin-settings)
-* Service Token * - as described above in [plugin settings](#plugin-settings)
-* Message Title - plain text one-line title of the message
-* Message Body - the body of the message in JSON, MD, HTML, or plain text format
-* Recipients * - the list of recipients, either usernames or group names, one per line
-* From - indicates the source of the message, either a valid user name or arbitrary text string
-* Email - if checked and SystemXYZ is linked to an email system, the message is sent out as an email instead of a SystemXYZ Ex message.
+1. Spreadsheet URL - the URL of an existing spreadsheet, e.g. `https://docs.google.com/spreadsheets/d/18nfMDZn9MlYyff_4MCO8J-UUh4MQQeIAtypaOt0z2zQ/edit`
+1. Sheet Name - A name for the additional sheet, must be unique within the spreadsheet.
 
-## Method: Read Zed Alarms
-This method reads a Zed Alarm group from SystemXYZ whether or not any of the alarms are active. It is commonly used with the Kaholo [SystemXYZ trigger](https://github.com/Kaholo/kaholo-trigger-systemxyz) and [SystemXYZ Zed Hooks](https://www.systemxyz.com.nz/zed_hooks/v4). The trigger provides the timely response to an alarm, while this method provides the details of the alarm.
+## Method: Insert Row
+This inserts a row of data into a sheet. The data is entered one-per-line, the first line being the value in column A, the second line column B, and so on. An empty line will result in an empty cell in the row. For example:
 
-If parameter `Zed Hook Code` is configured, the details on the triggering alarm are provided. If parameter `Alarm Group` is provided the details on all alarms (active or not) are provided. If both are configured, details on both are provided, even if the code refers to an alarm not in that group. This is useful in overcoming cross-group limitations in SystemXYZ alarms.
+    23.5
+    10.53
+    unk
 
-The Final Result in Kaholo is a JSON document of the same format as the equivalent [SystemXYZ Alarm Export](https://www.systemxyz.com.nz/alarm_export/v4).
+    38.2
+
+This example would put 38.2 in column E and column D would be empty.
+
+If a row number is specified and that row already contains data, the data is overwritten. A row can be overwritten with all empty lines to get a "Delete Row" effect.
+
+If NO row number is specified, the data is inserted into the first empty row.
 
 ### Parameters
-Required parameters have an asterisk (*) next to their names.
-* XYZ Endpoint * - as described above in [plugin settings](#plugin-settings)
-* Service Token * - as described above in [plugin settings](#plugin-settings)
-* Zed Hook Code - a code string from Zed Hooks, e.g. `zed-20220329aad`
-* Zed Alarm Group - a Zed alarm group, e.g. `zed-group-one`
+1. Spreadsheet URL - the URL of an existing spreadsheet
+1. Sheet Name - the name of an existing sheet in that spreadsheet
+1. Data - a list of values, one per row, to insert into the spreadsheet
+1. Row Number - the row in which the data will be inserted, overwriting existing data. If not specified the insert is in the first empty row.
 
-## Method: Set Zed Alarm
-This method is not yet implemented. If you are interested in setting Zed alarms from Kaholo, please let us know! support@kaholo.io.
+## Method: Modify Access Rights
+For access rights there are two types of sharing:
+* Restricted - individual users are assigned rights to view, comment or edit the spreadsheet.
+* Unrestricted - anybody with the URL is able to edit the spreadsheet.
+
+If Unrestricted the remaining parameters don't matter and may be left unspecified.
+
+If restricted, three kinds of access can be granted:
+* viewers - read only access
+* commenters - read only plus able to enter comments
+* editors - full read/write access to the spreadsheet
+
+Email addresses should be added one-per-line, e.g.
+    
+    brad@kaholo.io
+    sally@kaholo.io
+    abe@kaholo.io
+
+Notify Message is a text message sent along to email addresses granted access to inform the user about the nature of the spreadsheet to which they've been granted access, for example "Water sample laboratory test results spreadsheet."
+
+### Parameters
+1. Spreadsheet URL - the URL of an existing spreadsheet
+1. Sharing - either restricted or unrestricted
+1. Viewers - email addresses of those who are viewers
+1. Commenters - email addresses of those who can comment
+1. Editors - email addresses of those with full editing rights
+1. Notify Message - message sent when informing end users of their new access rights
+1. Overwrite Existing Access Rights - if selected, these rights replace all existing ones instead of being added to the existing ones.
