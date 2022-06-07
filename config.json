@@ -1,7 +1,7 @@
 {
   "name": "google-sheets",
   "viewName": "Google Sheets",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "executer",
   "execProgram": "node",
   "main": "app.js",
@@ -23,7 +23,7 @@
         {
           "name": "credentials",
           "viewName": "Service Account Credentials",
-          "description": "JSON document containing service account credentials.",
+          "description": "Google Cloud service account credentials in JSON format. Sheets and Drive APIs need to be enabled in your Google Cloud account. ",
           "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
           "parserType": "object",
           "type": "vault"
@@ -61,7 +61,7 @@
         {
           "name": "credentials",
           "viewName": "Service Account Credentials",
-          "description": "JSON document containing service account credentials.",
+          "description": "Google Cloud service account credentials in JSON format. Sheets and Drive APIs need to be enabled in your Google Cloud account. ",
           "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
           "parserType": "object",
           "type": "vault"
@@ -69,7 +69,7 @@
         {
           "name": "spreadsheetUrl",
           "viewName": "Spreadsheet URL",
-          "description": "URL of the spreadsheet to add a sheet to.",
+          "description": "The Service Account used to authenticate needs to have access to this spreadsheet. You can grant access by sharing the sheet with the Service Account email found in the Google Cloud Console.",
           "type": "string",
           "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
           "required": true
@@ -91,7 +91,7 @@
         {
           "name": "credentials",
           "viewName": "Service Account Credentials",
-          "description": "JSON document containing service account credentials.",
+          "description": "Google Cloud service account credentials in JSON format. Sheets and Drive APIs need to be enabled in your Google Cloud account. ",
           "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
           "parserType": "object",
           "type": "vault"
@@ -99,7 +99,7 @@
         {
           "name": "spreadsheetUrl",
           "viewName": "Spreadsheet URL",
-          "description": "URL of the spreadsheet.",
+          "description": "The Service Account used to authenticate needs to have access to this spreadsheet. You can grant access by sharing the sheet with the Service Account email found in the Google Cloud Console.",
           "type": "string",
           "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
           "required": true
@@ -136,7 +136,7 @@
         {
           "name": "credentials",
           "viewName": "Service Account Credentials",
-          "description": "JSON document containing service account credentials.",
+          "description": "Google Cloud service account credentials in JSON format. Sheets and Drive APIs need to be enabled in your Google Cloud account. ",
           "learnUrl": "https://developers.google.com/workspace/guides/create-credentials#service-account",
           "parserType": "object",
           "type": "vault"
@@ -144,7 +144,7 @@
         {
           "name": "spreadsheetUrl",
           "viewName": "Spreadsheet URL",
-          "description": "URL of the spreadsheet.",
+          "description": "The Service Account used to authenticate needs to have access to this spreadsheet. You can grant access by sharing the sheet with the Service Account email found in the Google Cloud Console.",
           "type": "string",
           "placeholder": "https://docs.google.com/spreadsheets/d/1OIu0_tNKDrys4T3CtqJCZ4_TEg1HYJOI86ywgU3JGIe/",
           "required": true
